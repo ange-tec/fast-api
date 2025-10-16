@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id       Int     @id @default(autoincrement())
+  email    String  @db.VarChar(255)
+  password String  @db.VarChar(255)
+  post     posts[]
+}
+
+model posts {
+  id             Int              @id @default(autoincrement())
+  title          String           @db.VarChar(255)
+  content        String           @db.Text
+  author         users            @relation(fields: [authorId], references: [id])
+  authorId       Int
+  category       categories       @relation(fields: [categoryId], references: [id])
+  categoryId     Int
+  postCategories postCategories[]
+}
+
+model categories {
+  id             Int              @id @default(autoincrement())
+  name           String           @db.VarChar(255)
+  post           posts[]
+  postCategories postCategories[]
+}
+
+model postCategories {
+  categoryId Int
+  postId     Int
+  post       posts      @relation(fields: [postId], references: [id])
+  category   categories @relation(fields: [categoryId], references: [id])
+
+  @@id([categoryId, postId])
+}
