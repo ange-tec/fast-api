@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import dotenv from "dotenv";
 import { registerPostRoutes } from "./controllers/post.js";
 import { registerAuthRoutes } from "./controllers/auth.js";
 import { registerAuthMiddleware} from "./middlewares/auth.js";
@@ -6,7 +7,6 @@ import fastifyAuth from "@fastify/auth";
 import FastifySwagger from '@fastify/swagger'
 
 import FastifySwaggerUI from '@fastify/swagger-ui'
-import dotenv from "dotenv";
 import {registerCategoryRoutes} from "./controllers/category.js";
 import {registerErrorMiddleware} from "./middlewares/error.js";
 
