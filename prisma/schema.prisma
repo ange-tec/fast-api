@@ -1,43 +1,39 @@
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
 model users {
-  id       Int     @id @default(autoincrement())
-  email    String  @db.VarChar(255)
-  password String  @db.VarChar(255)
-  post     posts[]
+  id       Int    @id @default(autoincrement())
+  email    String @db.VarChar(255)
+  password String @db.VarChar(255)
 }
 
 model posts {
-  id             Int              @id @default(autoincrement())
-  title          String           @db.VarChar(255)
-  content        String           @db.Text
-  author         users            @relation(fields: [authorId], references: [id])
-  authorId       Int
-  category       categories       @relation(fields: [categoryId], references: [id])
-  categoryId     Int
-  postCategories postCategories[]
+  id         Int    @id @default(autoincrement())
+  title      String @db.VarChar(255)
+  content    String @db.Text
+  authorId   Int
+  categoryId Int
+
+  @@index([authorId], map: "posts_authorId_fkey")
+  @@index([categoryId], map: "posts_categoryId_fkey")
 }
 
 model categories {
-  id             Int              @id @default(autoincrement())
-  name           String           @db.VarChar(255)
-  post           posts[]
-  postCategories postCategories[]
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
 }
 
-model postCategories {
+model postcategories {
   categoryId Int
   postId     Int
-  post       posts      @relation(fields: [postId], references: [id])
-  category   categories @relation(fields: [categoryId], references: [id])
 
   @@id([categoryId, postId])
+  @@index([postId], map: "postCategories_postId_fkey")
 }
