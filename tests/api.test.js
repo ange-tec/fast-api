@@ -52,5 +52,5 @@ test('POST /posts', async () => {
     expect(data).toHaveProperty('id');
     expect(data.title).toBe('John doe');
     expect(data.content).toBe('John doe is a business developer');
-    expect(data.authorId).to.(1);
+    expect(data.authorId).to.have(1);
 })
