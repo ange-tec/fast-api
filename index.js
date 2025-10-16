@@ -5,11 +5,11 @@ import { registerAuthMiddleware} from "./middlewares/auth.js";
 import fastifyAuth from "@fastify/auth";
 import FastifySwagger from '@fastify/swagger'
 import dotenv from "dotenv";
-dotenv.config({ path: process.env.NODE_ENV == 'production' ? process.env.DOTENV_CONFIG_PATH : '.env' });
 import FastifySwaggerUI from '@fastify/swagger-ui'
 import {registerCategoryRoutes} from "./controllers/category.js";
 import {registerErrorMiddleware} from "./middlewares/error.js";
 
+dotenv.config();
 
 const logger = {
   transport: {
