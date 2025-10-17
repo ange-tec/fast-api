@@ -13,10 +13,8 @@ CREATE TABLE `posts` (
     `title` VARCHAR(255) NOT NULL,
     `content` TEXT NOT NULL,
     `authorId` INTEGER NOT NULL,
-    `categoryId` INTEGER NOT NULL,
 
     INDEX `posts_authorId_fkey`(`authorId`),
-    INDEX `posts_categoryId_fkey`(`categoryId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -33,6 +31,14 @@ CREATE TABLE `postcategories` (
     `categoryId` INTEGER NOT NULL,
     `postId` INTEGER NOT NULL,
 
-    INDEX `postCategories_postId_fkey`(`postId`),
     PRIMARY KEY (`categoryId`, `postId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `posts` ADD CONSTRAINT `posts_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `postcategories` ADD CONSTRAINT `postcategories_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `posts`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `postcategories` ADD CONSTRAINT `postcategories_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
