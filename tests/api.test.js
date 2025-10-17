@@ -7,6 +7,8 @@ const client = got.extend({
     throwHttpErrors: false,
 })
 
+let token = null;
+
 test('POST /signup', async () => {
     const res = await client.post('signup', {
         json: {
@@ -36,10 +38,14 @@ test('POST /login', async () => {
     expect(data).toHaveProperty('id');
     expect(data.email).toBe('johndoe@gmail.com');
     expect(data).to.not.have.property('password');
+    token = data.token;
 })
 
 test('POST /posts', async () => {
     const res = await client.post('posts', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         json: {
             title: 'John doe',
             content: 'John doe is a business developer',
@@ -52,5 +58,5 @@ test('POST /posts', async () => {
     expect(data).toHaveProperty('id');
     expect(data.title).toBe('John doe');
     expect(data.content).toBe('John doe is a business developer');
-    expect(data.authorId).to.have(1);
+    expect(data.authorId).toBe(1);
 })

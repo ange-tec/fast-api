@@ -14,9 +14,10 @@ export const createPostDto = {
         id: { type: 'number'},
         title : { type: 'string'},
           content: { type: 'string' },
+          authorId: { type: 'number'},
           author: { type: "object", properties: { email: { type: 'string' } } },
       },
-      required: ['id', 'title', 'content']
+      required: ['id', 'title', 'content', 'authorId'],
     }
   }
 };

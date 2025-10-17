@@ -9,31 +9,34 @@ datasource db {
 }
 
 model users {
-  id       Int    @id @default(autoincrement())
-  email    String @db.VarChar(255)
-  password String @db.VarChar(255)
+  id       Int     @id @default(autoincrement())
+  email    String  @db.VarChar(255)
+  password String  @db.VarChar(255)
+  posts    posts[]
 }
 
 model posts {
-  id         Int    @id @default(autoincrement())
-  title      String @db.VarChar(255)
-  content    String @db.Text
+  id         Int              @id @default(autoincrement())
+  title      String           @db.VarChar(255)
+  content    String           @db.Text
   authorId   Int
-  categoryId Int
+  author     users            @relation(fields: [authorId], references: [id])
+  categories postcategories[]
 
   @@index([authorId], map: "posts_authorId_fkey")
-  @@index([categoryId], map: "posts_categoryId_fkey")
 }
 
 model categories {
-  id   Int    @id @default(autoincrement())
-  name String @db.VarChar(255)
+  id    Int              @id @default(autoincrement())
+  name  String           @db.VarChar(255)
+  posts postcategories[]
 }
 
 model postcategories {
   categoryId Int
   postId     Int
+  post       posts      @relation(fields: [postId], references: [id])
+  category   categories @relation(fields: [categoryId], references: [id])
 
   @@id([categoryId, postId])
-  @@index([postId], map: "postCategories_postId_fkey")
 }
